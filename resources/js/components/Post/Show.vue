@@ -2,7 +2,8 @@
     <div>
         <div v-if="post" >
             <h4 class="d-inline">{{ post.title }}</h4>
-                <input @click.prevent="update(post.id)" type="submit" class="btn btn-primary" value="update">
+                <input @click.prevent="update(post.id)" type="submit" class="btn btn-primary" value="Update">
+                <input @click.prevent="deletePost(post.id)" type="submit" class="btn btn-danger" value="Delete">
             <div v-for="image in post.images" class="mb-3">
                 <img :src="image.preview_url" alt="preview_Image" class="mb-3">
                 <div class="mb-3"><img :src="image.url" alt="Image"></div>
@@ -31,6 +32,13 @@ export default {
             .catch (err => {
                 console.log(err.responce)
             })
+        },
+        deletePost() {
+            axios.delete(`/api/posts/${this.post.id}`)
+                .then(res => {
+                    this.$router.push({ name: 'index.post'})
+                }
+                )
         }
     }
 }

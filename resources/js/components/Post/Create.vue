@@ -11,6 +11,7 @@
             </vue-editor>
             <input @click.prevent="store" type="submit" class="btn btn-primary mt-3" value="add">
         </div>
+        <div v-if="created"> Created Successully! </div>
     </div>
 </template>
 <script>
@@ -24,6 +25,7 @@ export default {
             dropzone: null,
             content: "",
             title: '',
+            created: false,
         }
     },
     mounted() {
@@ -50,6 +52,7 @@ export default {
                     })
                     this.title = ''
                     this.content = ''
+                    this.created = true
                 }
                 )
         },

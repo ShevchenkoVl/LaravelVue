@@ -14,6 +14,7 @@ Route::namespace('App\Http\Controllers')->middleware('auth:sanctum')->group(func
         Route::get('/', 'IndexController');
         Route::get('/{post}', 'ShowController');
         Route::patch('/{post}', 'UpdateController');
+        Route::delete('/{post}', 'DeleteController');
         
         Route::prefix('images')->namespace('Image')->group(function () {
             Route::post('/{post}', 'StoreController');

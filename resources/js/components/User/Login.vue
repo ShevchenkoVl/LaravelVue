@@ -20,8 +20,10 @@ export default {
                 // Login...
                 axios.post('/login', { email: this.email, password: this.password })
                 .then ( res => {
+                    if(res) {
                     localStorage.setItem('authorized', true)
                     this.$router.push({name: 'user.personal'})
+                    }
                 }
                 )
                 .catch ( err => {

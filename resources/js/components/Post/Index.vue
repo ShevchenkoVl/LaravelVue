@@ -23,10 +23,10 @@ export default {
         return {
             page: 0,
             posts: null,
-            is_visible: true,
+            is_visible: false,
         }
     },
-    
+
     mounted() {
         this.getPost()
     },
@@ -38,16 +38,18 @@ export default {
                 }
             })
                 .then(res => {
-                    if(this.posts !== null)
-                    this.posts.data = [...this.posts.data,...res.data.data]
+                    if (this.posts !== null) {
+                        this.posts.data = [...this.posts.data, ...res.data.data]
+                        this.posts.meta.to = res.data.meta.to
+                    }
                     else
-                    this.posts = res.data
+                        this.posts = res.data
                     //this.post = res.data.data
+                    this.is_visible = this.posts.meta.to < this.posts.meta.total
                 })
                 .catch(err => {
                     console.log(err.responce)
                 })
-                
         },
         show(id) {
             this.$router.push({ name: 'show.post', params: { id: id } })

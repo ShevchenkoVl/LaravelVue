@@ -1,44 +1,51 @@
 <template lang="">
-    <div>
-        <div v-if="post">
-            <h4>{{ post.title }}</h4>
-            <div v-for="image in post.images" class="mb-3">
-                <img :src="image.preview_url" alt="preview_Image" class="mb-3">
-                <div class="mb-3"><img :src="image.url" alt="Image"></div>
+    <div class="w-75 text-center">
+        <div v-if="posts" class="row row-cols-5 pt-5">
+            <div v-for="post in posts.data" class="col" >
+                <div @click.prevent="show(post.id)" class="row btn pb-5" >
+                    <div><img v-if="post.images != 0" :src="post.images[0].preview_url" alt="preview_Image" class="mb-3">
+                    <img v-else alt="preview_Image" class="mb-3"></div>
+                    <div><h4>{{ post.title }}</h4></div>
+                    <div><input @click.prevent="update(post.id)" type="submit" class="btn btn-primary mt-3" value="update"></div>
+                </div>
             </div>
-            <div v-html="post.content" class="ql-editor"></div>
         </div>
-        <table class="table mt-5 w-75">
-            <td v-for="post in posts" class="mb-3 btn"  >
-                <tr @click.prevent="show(post.id)">
-                    <img v-if="post.images != 0" :src="post.images[0].preview_url" alt="preview_Image" class="mb-3">
-                    <img v-else alt="preview_Image" class="mb-3">
-                    <h4>{{ post.title }}</h4>
-                </tr>
-                <input @click.prevent="update(post.id)" type="submit" class="btn btn-primary mt-3" value="update">
-            </td>
-        </table>
+        <div>
+            <a href="#" v-if="is_visible" @click.prevent="getPost()" class="d-block text-center btn btn-dark">More</a>
+        </div>
     </div>
 </template>
 <script>
 export default {
+    name: "Index",
+
     data() {
         return {
-            post: null,
+            page: 0,
             posts: null,
-            table_columns: 4,
+            is_visible: false,
         }
     },
-    name: "Index",
+
     mounted() {
         this.getPost()
     },
     methods: {
         getPost() {
-            axios.get('/api/posts')
+            axios.get('/api/posts', {
+                params: {
+                    page: ++this.page
+                }
+            })
                 .then(res => {
-                    this.posts = res.data.data
+                    if (this.posts !== null) {
+                        this.posts.data = [...this.posts.data, ...res.data.data]
+                        this.posts.meta.to = res.data.meta.to
+                    }
+                    else
+                        this.posts = res.data
                     //this.post = res.data.data
+                    this.is_visible = this.posts.meta.to < this.posts.meta.total
                 })
                 .catch(err => {
                     console.log(err.responce)

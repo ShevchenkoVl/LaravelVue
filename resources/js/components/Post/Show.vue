@@ -31,7 +31,11 @@ export default {
             .catch (err => {
                 console.log(err.responce)
             })
-        }
+        },
+        update(id) {
+            //update one chosen post
+            this.$router.push({ name: 'update.post', params: { id: id } })
+        },
     }
 }
 </script>

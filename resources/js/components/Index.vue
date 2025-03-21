@@ -22,7 +22,7 @@ export default {
         }
     },
     watch: {
-        $route(to, from) {
+        $route(to, from) {   
             this.hasAccess = localStorage.getItem('authorized')
         }
     },
@@ -32,11 +32,15 @@ export default {
                 axios.post('/logout')
                     .then(res => {
                         localStorage.removeItem('authorized')
+                        
                         this.$router.push({ name: 'user.login' })
                     })
             })
         }
     },
+    mounted() {
+        axios.get('/api/user')
+    }
 }
 </script>
 <style lang="">

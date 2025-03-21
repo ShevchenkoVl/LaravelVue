@@ -39,7 +39,11 @@ export default {
                     this.$router.push({ name: 'index.post'})
                 }
                 )
-        }
+        },
+        update(id) {
+            //update one chosen post
+            this.$router.push({ name: 'update.post', params: { id: id } })
+        },
     }
 }
 </script>

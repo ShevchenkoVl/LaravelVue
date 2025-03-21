@@ -36,6 +36,13 @@ export default {
             //update one chosen post
             this.$router.push({ name: 'update.post', params: { id: id } })
         },
+        deletePost() {
+            axios.delete(`/api/posts/${this.post.id}`)
+                .then(res => {
+                    this.$router.push({ name: 'index.post'})
+                }
+                )
+        }
     }
 }
 </script>
